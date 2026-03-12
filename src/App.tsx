@@ -7,6 +7,7 @@ import Index from "./pages/Index.tsx";
 import AboutPage from "./pages/AboutPage.tsx";
 import ProductsPage from "./pages/ProductsPage.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import WhatsAppButton from "./components/WhatsAppButton.tsx";
 
 const queryClient = new QueryClient();
 
