@@ -1,14 +1,11 @@
 import { motion } from "framer-motion";
 import { CheckCircle2 } from "lucide-react";
-
-const highlights = [
-  "18+ years of industry experience",
-  "Operations across 10+ Nigerian cities",
-  "Certified ICT professionals",
-  "End-to-end project delivery",
-];
+import { useSiteContent } from "@/providers/site-content-provider";
 
 const AboutSection = () => {
+  const { content } = useSiteContent();
+  const overview = content.about.overview;
+
   return (
     <section id="about" className="py-20 lg:py-28 bg-card">
       <div className="container mx-auto px-4 lg:px-8">
@@ -21,16 +18,16 @@ const AboutSection = () => {
           >
             <span className="text-sm font-heading font-semibold tracking-widest uppercase text-accent">About Us</span>
             <h2 className="text-3xl md:text-4xl font-heading font-800 text-foreground mt-3 mb-6">
-              Trusted ICT Partner Since 2007
+              {overview.title}
             </h2>
             <p className="text-muted-foreground leading-relaxed mb-6">
-              Netrix Systems Limited is a leading provider of information and communication technology products and services. Based in Ikeja, Lagos, we deliver world-class solar, power, security, and networking solutions to businesses and homes across Nigeria.
+              {overview.description}
             </p>
             <p className="text-muted-foreground leading-relaxed mb-8">
-              Our mission is <strong className="text-foreground">"Providing world-class ICT goods and services with customer satisfaction and total quality management"</strong>.
+              Our mission is <strong className="text-foreground">"{overview.mission}"</strong>.
             </p>
             <ul className="space-y-3">
-              {highlights.map((h) => (
+              {overview.highlights.map((h) => (
                 <li key={h} className="flex items-center gap-3 text-foreground">
                   <CheckCircle2 className="w-5 h-5 text-accent shrink-0" />
                   <span className="text-sm font-medium">{h}</span>
@@ -46,12 +43,7 @@ const AboutSection = () => {
             transition={{ duration: 0.6 }}
             className="grid grid-cols-2 gap-4"
           >
-            {[
-              { number: "18+", label: "Years Experience" },
-              { number: "10+", label: "Cities Covered" },
-              { number: "500+", label: "Projects Completed" },
-              { number: "100%", label: "Client Satisfaction" },
-            ].map((stat) => (
+            {overview.stats.map((stat) => (
               <div key={stat.label} className="bg-secondary rounded-lg p-6 text-center">
                 <div className="text-3xl font-heading font-800 text-gradient mb-1">{stat.number}</div>
                 <div className="text-sm text-muted-foreground">{stat.label}</div>

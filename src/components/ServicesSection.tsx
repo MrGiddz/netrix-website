@@ -1,45 +1,10 @@
 import { motion } from "framer-motion";
-import { Sun, Camera, Network, BatteryCharging, Flame, Home, Fingerprint, Wrench } from "lucide-react";
-import serviceSolar from "@/assets/hero-solar.jpg";
-import serviceCctv from "@/assets/service-cctv.jpg";
-import serviceCabling from "@/assets/service-cabling.jpg";
-import serviceInverter from "@/assets/service-inverter.jpg";
-
-const services = [
-  {
-    icon: Sun,
-    title: "Solar Installation & Sales",
-    description: "Complete solar panel systems — from design to installation — for homes and businesses across Nigeria.",
-    image: serviceSolar,
-  },
-  {
-    icon: Camera,
-    title: "CCTV & Security Systems",
-    description: "State-of-the-art surveillance equipment, installation, and monitoring for total peace of mind.",
-    image: serviceCctv,
-  },
-  {
-    icon: Network,
-    title: "Structured & Fibre Cabling",
-    description: "Enterprise-grade network infrastructure, fibre optic cabling, and data centre solutions.",
-    image: serviceCabling,
-  },
-  {
-    icon: BatteryCharging,
-    title: "Inverters & Power Backup",
-    description: "Inverter sales, installation, and lithium-ion battery systems to keep your operations running 24/7.",
-    image: serviceInverter,
-  },
-];
-
-const moreServices = [
-  { icon: Flame, label: "Fire Detection Systems" },
-  { icon: Home, label: "Home Automation" },
-  { icon: Fingerprint, label: "Biometric Access Control" },
-  { icon: Wrench, label: "Maintenance Services" },
-];
+import { resolveIconKey, resolveImageKey } from "@/lib/site-content";
+import { useSiteContent } from "@/providers/site-content-provider";
 
 const ServicesSection = () => {
+  const { content } = useSiteContent();
+
   return (
     <section id="services" className="py-20 lg:py-28 section-gradient">
       <div className="container mx-auto px-4 lg:px-8">
@@ -60,7 +25,9 @@ const ServicesSection = () => {
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
-          {services.map((service, i) => (
+          {content.services.map((service, i) => {
+            const Icon = resolveIconKey(service.iconKey);
+            return (
             <motion.div
               key={service.title}
               initial={{ opacity: 0, y: 30 }}
@@ -71,7 +38,7 @@ const ServicesSection = () => {
             >
               <div className="h-48 overflow-hidden">
                 <img
-                  src={service.image}
+                  src={resolveImageKey(service.imageKey)}
                   alt={service.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
@@ -79,19 +46,22 @@ const ServicesSection = () => {
               <div className="p-6">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-10 h-10 rounded-md bg-accent/10 flex items-center justify-center">
-                    <service.icon className="w-5 h-5 text-accent" />
+                    <Icon className="w-5 h-5 text-accent" />
                   </div>
                   <h3 className="font-heading font-700 text-lg text-foreground">{service.title}</h3>
                 </div>
                 <p className="text-muted-foreground text-sm leading-relaxed">{service.description}</p>
               </div>
             </motion.div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Additional services */}
         <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4">
-          {moreServices.map((s, i) => (
+          {content.additionalServices.map((s, i) => {
+            const Icon = resolveIconKey(s.iconKey);
+            return (
             <motion.div
               key={s.label}
               initial={{ opacity: 0, y: 20 }}
@@ -100,10 +70,11 @@ const ServicesSection = () => {
               transition={{ duration: 0.4, delay: 0.4 + i * 0.1 }}
               className="flex items-center gap-3 bg-card rounded-lg border border-border p-4"
             >
-              <s.icon className="w-5 h-5 text-accent shrink-0" />
+              <Icon className="w-5 h-5 text-accent shrink-0" />
               <span className="text-sm font-medium text-foreground">{s.label}</span>
             </motion.div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

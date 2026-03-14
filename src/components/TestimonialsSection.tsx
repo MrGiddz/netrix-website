@@ -1,34 +1,10 @@
 import { motion } from "framer-motion";
 import { Star, Quote } from "lucide-react";
-
-const testimonials = [
-  {
-    name: "Chief Adebayo Ogunleye",
-    role: "MD, Ogunleye & Associates",
-    text: "Netrix Systems installed a complete solar power system for our office complex in Ikeja. The team was professional, punctual, and the quality of work exceeded our expectations. We've cut our energy bills by over 70%.",
-    rating: 5,
-  },
-  {
-    name: "Mrs. Funke Adeyemi",
-    role: "Homeowner, Lekki",
-    text: "I was impressed by the CCTV installation Netrix did at my residence. The coverage is excellent and the remote monitoring setup works perfectly. I feel so much safer knowing my family is protected.",
-    rating: 5,
-  },
-  {
-    name: "Engr. Tunde Bakare",
-    role: "CTO, TechVentures Nigeria",
-    text: "We contracted Netrix for structured cabling across our new office. Their attention to detail and cable management was outstanding. The network performance has been flawless since installation.",
-    rating: 5,
-  },
-  {
-    name: "Alhaji Mustapha Ibrahim",
-    role: "Director, Ibrahim Holdings",
-    text: "Netrix installed inverters and battery backup systems across three of our properties. They delivered on time, within budget, and the systems have been running without issues for over two years.",
-    rating: 5,
-  },
-];
+import { useSiteContent } from "@/providers/site-content-provider";
 
 const TestimonialsSection = () => {
+  const { content } = useSiteContent();
+
   return (
     <section id="testimonials" className="py-20 lg:py-28 bg-card">
       <div className="container mx-auto px-4 lg:px-8">
@@ -51,7 +27,7 @@ const TestimonialsSection = () => {
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
-          {testimonials.map((t, i) => (
+          {content.testimonials.map((t, i) => (
             <motion.div
               key={t.name}
               initial={{ opacity: 0, y: 30 }}

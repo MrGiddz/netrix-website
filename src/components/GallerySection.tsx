@@ -1,29 +1,19 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { X } from "lucide-react";
-import gallerySolar1 from "@/assets/gallery-solar-1.jpg";
-import gallerySolar2 from "@/assets/gallery-solar-2.jpg";
-import galleryCctv1 from "@/assets/gallery-cctv-1.jpg";
-import galleryCabling1 from "@/assets/gallery-cabling-1.jpg";
-import galleryInverter1 from "@/assets/gallery-inverter-1.jpg";
-import galleryAutomation1 from "@/assets/gallery-automation-1.jpg";
-
-const projects = [
-  { image: gallerySolar1, title: "Commercial Solar Installation", category: "Solar", location: "Victoria Island, Lagos" },
-  { image: galleryCctv1, title: "Office CCTV System", category: "CCTV", location: "Abuja" },
-  { image: galleryCabling1, title: "Data Centre Cabling", category: "Cabling", location: "Ikeja, Lagos" },
-  { image: gallerySolar2, title: "Residential Solar Project", category: "Solar", location: "Lekki, Lagos" },
-  { image: galleryInverter1, title: "Inverter & Battery Setup", category: "Power", location: "Port Harcourt" },
-  { image: galleryAutomation1, title: "Smart Home & Fire Detection", category: "Automation", location: "Ikoyi, Lagos" },
-];
-
-const categories = ["All", ...new Set(projects.map((p) => p.category))];
+import { resolveImageKey } from "@/lib/site-content";
+import { useSiteContent } from "@/providers/site-content-provider";
 
 const GallerySection = () => {
+  const { content } = useSiteContent();
+  const categories = ["All", ...new Set(content.projects.map((p) => p.category))];
   const [filter, setFilter] = useState("All");
   const [lightbox, setLightbox] = useState<number | null>(null);
 
-  const filtered = filter === "All" ? projects : projects.filter((p) => p.category === filter);
+  const filtered =
+    filter === "All"
+      ? content.projects
+      : content.projects.filter((p) => p.category === filter);
 
   return (
     <section id="gallery" className="py-20 lg:py-28 section-gradient">
@@ -73,10 +63,10 @@ const GallerySection = () => {
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.4, delay: i * 0.05 }}
               className="group relative rounded-lg overflow-hidden cursor-pointer border border-border"
-              onClick={() => setLightbox(projects.indexOf(project))}
+              onClick={() => setLightbox(content.projects.indexOf(project))}
             >
               <img
-                src={project.image}
+                src={resolveImageKey(project.imageKey)}
                 alt={project.title}
                 className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500"
               />
@@ -104,13 +94,13 @@ const GallerySection = () => {
             <X className="w-8 h-8" />
           </button>
           <img
-            src={projects[lightbox].image}
-            alt={projects[lightbox].title}
+            src={resolveImageKey(content.projects[lightbox].imageKey)}
+            alt={content.projects[lightbox].title}
             className="max-w-full max-h-[85vh] rounded-lg object-contain"
           />
           <div className="absolute bottom-8 text-center">
-            <p className="text-card font-heading font-700">{projects[lightbox].title}</p>
-            <p className="text-card/60 text-sm">{projects[lightbox].location}</p>
+            <p className="text-card font-heading font-700">{content.projects[lightbox].title}</p>
+            <p className="text-card/60 text-sm">{content.projects[lightbox].location}</p>
           </div>
         </div>
       )}

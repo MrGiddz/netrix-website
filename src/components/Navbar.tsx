@@ -2,26 +2,42 @@ import { useState } from "react";
 import { Menu, X, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from "react-router-dom";
+import { useSiteContent } from "@/providers/site-content-provider";
+import logo from "@/assets/logo.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const isHome = location.pathname === "/";
+  const { content } = useSiteContent();
 
-  const navLinks = [
-    { label: "Home", href: isHome ? "#home" : "/", isRoute: !isHome },
-    { label: "About", href: isHome ? "#about" : "/about", isRoute: !isHome },
-    { label: "Services", href: isHome ? "#services" : "/#services", isRoute: !isHome },
-    { label: "Products", href: "/products", isRoute: true },
-    { label: "Gallery", href: isHome ? "#gallery" : "/#gallery", isRoute: !isHome },
-    { label: "Contact", href: isHome ? "#contact" : "/#contact", isRoute: !isHome },
-  ];
+  const navLinks = content.navigation.map((item) => {
+    if (item.label === "Home") {
+      return { ...item, href: isHome ? "#home" : "/", isRoute: !isHome };
+    }
+    if (item.label === "About") {
+      return { ...item, href: isHome ? "#about" : "/about", isRoute: !isHome };
+    }
+    if (item.label === "Services") {
+      return { ...item, href: isHome ? "#services" : "/#services", isRoute: !isHome };
+    }
+    if (item.label === "Gallery") {
+      return { ...item, href: isHome ? "#gallery" : "/#gallery", isRoute: !isHome };
+    }
+    if (item.label === "Contact") {
+      return { ...item, href: isHome ? "#contact" : "/#contact", isRoute: !isHome };
+    }
+    return { ...item, isRoute: true };
+  });
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-md border-b border-border">
       <div className="container mx-auto flex items-center justify-between h-16 px-4 lg:px-8">
-        <Link to="/" className="font-heading text-xl font-800 tracking-tight text-primary">
-          NETRIX<span className="text-accent">.</span>
+        <Link to="/" className="flex items-center gap-3 text-primary">
+          <img src={logo} alt="Netrix Systems logo" className="h-9 w-9 object-contain" />
+          <span className="font-heading text-xl font-800 tracking-tight">
+            NETRIX<span className="text-accent">.</span>
+          </span>
         </Link>
 
         {/* Desktop nav */}
@@ -45,7 +61,7 @@ const Navbar = () => {
               </a>
             )
           )}
-          <a href="tel:08105249055">
+          <a href={`tel:${content.contact.phone.replace(/\s+/g, "")}`}>
             <Button variant="default" size="sm" className="gap-2 bg-accent text-accent-foreground hover:bg-accent/90">
               <Phone className="w-4 h-4" />
               Call Us
@@ -83,7 +99,7 @@ const Navbar = () => {
               </a>
             )
           )}
-          <a href="tel:08105249055">
+          <a href={`tel:${content.contact.phone.replace(/\s+/g, "")}`}>
             <Button variant="default" size="sm" className="w-full gap-2 bg-accent text-accent-foreground hover:bg-accent/90">
               <Phone className="w-4 h-4" />
               Call Us

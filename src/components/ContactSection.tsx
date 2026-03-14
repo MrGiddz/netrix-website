@@ -2,14 +2,19 @@ import { motion } from "framer-motion";
 import { MapPin, Phone, Mail, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { useSiteContent } from "@/providers/site-content-provider";
 
 const ContactSection = () => {
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
+  const { content } = useSiteContent();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const waMsg = `Hello Netrix Systems! My name is ${form.name}. ${form.message} — Email: ${form.email}, Phone: ${form.phone}`;
-    window.open(`https://wa.me/2348105249055?text=${encodeURIComponent(waMsg)}`, "_blank");
+    window.open(
+      `https://wa.me/${content.contact.whatsappNumber}?text=${encodeURIComponent(waMsg)}`,
+      "_blank",
+    );
   };
 
   return (
@@ -24,17 +29,17 @@ const ContactSection = () => {
           >
             <span className="text-sm font-heading font-semibold tracking-widest uppercase text-accent">Get In Touch</span>
             <h2 className="text-3xl md:text-4xl font-heading font-800 mt-3 mb-6">
-              Request a Free Quote
+              {content.contact.quoteHeading}
             </h2>
             <p className="text-primary-foreground/70 mb-10 max-w-md">
-              Ready to power your business? Reach out and our team will get back to you within 24 hours.
+              {content.contact.quoteDescription}
             </p>
 
             <div className="space-y-6">
               {[
-                { icon: MapPin, text: "3 Akintoye Sogunle Street, Off Obafemi Awolowo Way, Ikeja, Lagos" },
-                { icon: Phone, text: "0810 524 9055" },
-                { icon: Mail, text: "netrixsystemsng@gmail.com" },
+                { icon: MapPin, text: content.contact.address },
+                { icon: Phone, text: content.contact.phone },
+                { icon: Mail, text: content.contact.email },
               ].map((item) => (
                 <div key={item.text} className="flex items-start gap-4">
                   <item.icon className="w-5 h-5 text-accent mt-0.5 shrink-0" />
@@ -44,7 +49,7 @@ const ContactSection = () => {
             </div>
 
             <a
-              href="https://wa.me/2348105249055"
+              href={`https://wa.me/${content.contact.whatsappNumber}`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 mt-8 px-6 py-3 bg-[#25D366] text-primary-foreground rounded-lg font-heading font-semibold text-sm hover:opacity-90 transition-opacity"
