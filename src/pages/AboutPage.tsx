@@ -4,14 +4,40 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Seo from "@/components/Seo";
+import { getAbsoluteUrl } from "@/lib/seo";
 import { resolveIconKey, resolveImageKey } from "@/lib/site-content";
 import { useSiteContent } from "@/providers/site-content-provider";
 
 const AboutPage = () => {
   const { content } = useSiteContent();
+  const aboutSchema = {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    name: "About Netrix Systems Limited",
+    url: getAbsoluteUrl("/about"),
+    description: content.about.overview.description,
+    mainEntity: {
+      "@type": "Organization",
+      name: "Netrix Systems Limited",
+      foundingDate: "2007",
+      description: content.about.overview.description,
+      employee: content.about.team.map((member) => ({
+        "@type": "Person",
+        name: member.name,
+        jobTitle: member.role,
+      })),
+    },
+  };
 
   return (
     <div className="min-h-screen bg-background">
+      <Seo
+        title="About Netrix Systems Limited"
+        description={content.about.overview.description}
+        path="/about"
+        schema={aboutSchema}
+      />
       <Navbar />
 
       {/* Hero */}

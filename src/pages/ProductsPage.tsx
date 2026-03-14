@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Seo from "@/components/Seo";
+import { getAbsoluteUrl } from "@/lib/seo";
 import { resolveImageKey } from "@/lib/site-content";
 import { useSiteContent } from "@/providers/site-content-provider";
 
@@ -17,9 +19,36 @@ const categoryIcons: Record<string, typeof Sun> = {
 const ProductsPage = () => {
   const { content } = useSiteContent();
   const categories = [...new Set(content.products.map((p) => p.category))];
+  const catalogSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Netrix Product Catalog",
+    url: getAbsoluteUrl("/products"),
+    description:
+      "Browse solar panels, CCTV systems, inverters and structured cabling products from Netrix Systems Limited.",
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: content.products.map((product, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        item: {
+          "@type": "Product",
+          name: product.name,
+          description: product.description,
+          category: product.category,
+        },
+      })),
+    },
+  };
 
   return (
     <div className="min-h-screen bg-background">
+      <Seo
+        title="Product Catalog | Netrix Systems Limited"
+        description="Browse solar panels, CCTV systems, inverters and structured cabling products from Netrix Systems Limited."
+        path="/products"
+        schema={catalogSchema}
+      />
       <Navbar />
 
       {/* Hero */}
