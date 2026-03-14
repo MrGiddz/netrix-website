@@ -9,7 +9,7 @@ export function getSiteUrl() {
     return window.location.origin;
   }
 
-  return normalizeUrl(import.meta.env.VITE_SITE_URL || "https://example.com");
+  return normalizeUrl(import.meta.env.VITE_SITE_URL || "https://example.com"); 
 }
 
 export function getAbsoluteUrl(pathname = "/") {
