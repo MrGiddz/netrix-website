@@ -45,11 +45,12 @@ const Seo = ({
     setMeta('meta[property="og:site_name"]', "property", "og:site_name", SEO_SITE_NAME);
     setMeta('meta[property="og:locale"]', "property", "og:locale", "en_NG");
     setMeta('meta[property="og:image"]', "property", "og:image", imageUrl);
-    setMeta('meta[property="og:image:alt"]', "property", "og:image:alt", `${SEO_SITE_NAME} preview image`);
+    setMeta('meta[property="og:image:alt"]', "property", "og:image:alt", `${SEO_SITE_NAME} company logo`);
     setMeta('meta[name="twitter:card"]', "name", "twitter:card", "summary_large_image");
     setMeta('meta[name="twitter:title"]', "name", "twitter:title", resolvedTitle);
     setMeta('meta[name="twitter:description"]', "name", "twitter:description", description);
     setMeta('meta[name="twitter:image"]', "name", "twitter:image", imageUrl);
+    setMeta('meta[name="twitter:image:alt"]', "name", "twitter:image:alt", `${SEO_SITE_NAME} company logo`);
 
     setCanonical(url);
     setSchema(schema);
