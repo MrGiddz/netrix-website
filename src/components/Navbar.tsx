@@ -49,7 +49,7 @@ const Navbar = () => {
           <img
             src={logo}
             alt="Netrix Systems logo"
-            className="h-40 w-40 object-contain scale-200"
+            className="h-32 w-32 md:h-64 md:w-64 object-contain scale-200"
           />
         </Link>
 
