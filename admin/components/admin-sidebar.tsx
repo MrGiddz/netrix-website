@@ -6,7 +6,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { adminNavItems } from "@/components/admin-nav";
-import logo from "../../src/assets/logo.png";
 
 function SidebarLinks({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname();
@@ -14,7 +13,8 @@ function SidebarLinks({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <div className="space-y-2">
       {adminNavItems.map((item) => {
-        const isActive = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
+        const isActive =
+          item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
         return (
           <Link
             key={item.href}
@@ -40,12 +40,18 @@ function SidebarPanel({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <div className="flex h-full flex-col bg-slate-950 text-slate-100">
       <div className="border-b border-white/10 px-4 py-4">
-        <Link href="/" onClick={onNavigate} className="flex items-center gap-3 text-white">
+        <Link
+          href="/"
+          onClick={onNavigate}
+          className="flex items-center gap-3 text-white"
+        >
           <div className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-xl bg-white/8 ring-1 ring-white/10">
             <Image
-              src={logo}
+              src="/logo.png"
               alt="Netrix logo"
               className="h-8 w-8 object-contain"
+              width={32}
+              height={32}
               priority
             />
           </div>
@@ -92,7 +98,14 @@ const AdminSidebar = () => {
         <div className="flex items-center justify-between px-4 py-3">
           <Link href="/" className="flex items-center gap-3 text-slate-950">
             <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl border border-slate-200 bg-white">
-              <Image src={logo} alt="Netrix logo" className="h-7 w-7 object-contain" priority />
+              <Image
+                src="/logo.png"
+                alt="Netrix logo"
+                className="h-7 w-7 object-contain"
+                width={28}
+                height={28}
+                priority
+              />
             </div>
             <div className="min-w-0">
               <p className="font-heading text-lg font-800 tracking-tight">
@@ -105,7 +118,11 @@ const AdminSidebar = () => {
             onClick={() => setMobileOpen((value) => !value)}
             className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-900"
           >
-            {mobileOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+            {mobileOpen ? (
+              <X className="h-4 w-4" />
+            ) : (
+              <Menu className="h-4 w-4" />
+            )}
           </button>
         </div>
       </div>

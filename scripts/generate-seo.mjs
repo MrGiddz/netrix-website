@@ -6,10 +6,11 @@ const rootDir = process.cwd();
 const publicDir = path.join(rootDir, "public");
 const logoPath = path.join(rootDir, "src/assets/logo.png");
 const siteUrl = normalizeSiteUrl(
-  process.env.VITE_SITE_URL || process.env.SITE_URL || "https://netrix-website.vercel.app",
+  process.env.VITE_SITE_URL ||
+    process.env.SITE_URL ||
+    "https://netrix-website.vercel.app",
 );
 const require = createRequire(import.meta.url);
-const sharp = require(path.join(rootDir, "admin/node_modules/sharp"));
 
 const routes = ["/", "/about", "/products"];
 const now = new Date().toISOString();
@@ -58,17 +59,32 @@ function escapeXml(value) {
 }
 
 async function generateIcons() {
-  const favicon16 = await renderSquarePng(16);
-  const favicon32 = await renderSquarePng(32);
-  const appleTouchIcon = await renderSquarePng(180);
+  const sharp = loadSharp();
+
+  if (!sharp) {
+    console.warn(
+      "[seo] sharp is not installed in this build environment. Reusing checked-in favicon assets.",
+    );
+    return;
+  }
+
+  const favicon16 = await renderSquarePng(sharp, 16);
+  const favicon32 = await renderSquarePng(sharp, 32);
+  const appleTouchIcon = await renderSquarePng(sharp, 180);
 
   fs.writeFileSync(path.join(publicDir, "favicon-16x16.png"), favicon16);
   fs.writeFileSync(path.join(publicDir, "favicon-32x32.png"), favicon32);
-  fs.writeFileSync(path.join(publicDir, "apple-touch-icon.png"), appleTouchIcon);
-  fs.writeFileSync(path.join(publicDir, "favicon.ico"), createIcoFromPng(favicon32, 32));
+  fs.writeFileSync(
+    path.join(publicDir, "apple-touch-icon.png"),
+    appleTouchIcon,
+  );
+  fs.writeFileSync(
+    path.join(publicDir, "favicon.ico"),
+    createIcoFromPng(favicon32, 32),
+  );
 }
 
-function renderSquarePng(size) {
+function renderSquarePng(sharp, size) {
   return sharp(logoPath)
     .resize(size, size, {
       fit: "contain",
@@ -76,6 +92,23 @@ function renderSquarePng(size) {
     })
     .png()
     .toBuffer();
+}
+
+function loadSharp() {
+  for (const candidate of [
+    "sharp",
+    path.join(rootDir, "admin/node_modules/sharp"),
+  ]) {
+    try {
+      return require(candidate);
+    } catch (error) {
+      if (error && error.code !== "MODULE_NOT_FOUND") {
+        throw error;
+      }
+    }
+  }
+
+  return null;
 }
 
 function createIcoFromPng(pngBuffer, size) {
