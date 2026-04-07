@@ -10,17 +10,20 @@ const Footer = () => {
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <Link to="/" className="flex items-center gap-3">
-            <img src={logo} alt="Netrix Systems logo" className="h-16 w-16 object-contain scale-200" />
-            <span className="font-heading text-lg font-800 tracking-tight">
-              NETRIX<span className="text-accent">.</span>
-            </span>
+            <img
+              src={logo}
+              alt="Netrix Systems logo"
+              className="h-48 w-48 object-contain scale-250"
+            />
           </Link>
           <p className="text-sm text-background/60 text-center">
-            © {new Date().getFullYear()} Netrix Systems Limited. All rights reserved.
+            © {new Date().getFullYear()} Netrix Systems Limited. All rights
+            reserved.
           </p>
           <div className="flex gap-6">
             {content.navigation.map((item) =>
-              item.href.startsWith("/about") || item.href.startsWith("/products") ? (
+              item.href.startsWith("/about") ||
+              item.href.startsWith("/products") ? (
                 <Link
                   key={item.label}
                   to={item.href}
