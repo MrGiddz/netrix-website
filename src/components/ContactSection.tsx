@@ -1,24 +1,62 @@
 import { motion } from "framer-motion";
-import { MapPin, Phone, Mail, MessageCircle } from "lucide-react";
+import {
+  MapPin,
+  Phone,
+  Mail,
+  MessageCircle,
+  CheckCircle,
+  AlertCircle,
+  Loader2,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useSiteContent } from "@/providers/site-content-provider";
 
+type Status = "idle" | "loading" | "success" | "error";
+
 const ContactSection = () => {
-  const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
+  const [status, setStatus] = useState<Status>("idle");
+  const [errorMsg, setErrorMsg] = useState("");
   const { content } = useSiteContent();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const waMsg = `Hello Netrix Systems! My name is ${form.name}. ${form.message} — Email: ${form.email}, Phone: ${form.phone}`;
-    window.open(
-      `https://wa.me/${content.contact.whatsappNumber}?text=${encodeURIComponent(waMsg)}`,
-      "_blank",
-    );
+    setStatus("loading");
+    setErrorMsg("");
+    try {
+      const apiBase = (
+        import.meta.env.VITE_API_URL || "http://localhost:3001"
+      ).replace(/\/api$/, "");
+      const res = await fetch(`${apiBase}/api/contact`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error ?? "Something went wrong");
+      }
+      setStatus("success");
+      setForm({ name: "", email: "", phone: "", message: "" });
+    } catch (err) {
+      setErrorMsg(
+        err instanceof Error ? err.message : "Failed to send message",
+      );
+      setStatus("error");
+    }
   };
 
   return (
-    <section id="contact" className="py-20 lg:py-28 bg-primary text-primary-foreground">
+    <section
+      id="contact"
+      className="py-20 lg:py-28 bg-primary text-primary-foreground"
+    >
       <div className="container mx-auto px-4 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12">
           <motion.div
@@ -27,7 +65,9 @@ const ContactSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <span className="text-sm font-heading font-semibold tracking-widest uppercase text-accent">Get In Touch</span>
+            <span className="text-sm font-heading font-semibold tracking-widest uppercase text-accent">
+              Get In Touch
+            </span>
             <h2 className="text-3xl md:text-4xl font-heading font-800 mt-3 mb-6">
               {content.contact.quoteHeading}
             </h2>
@@ -36,16 +76,32 @@ const ContactSection = () => {
             </p>
 
             <div className="space-y-6">
-              {[
-                { icon: MapPin, text: content.contact.address },
-                { icon: Phone, text: content.contact.phone },
-                { icon: Mail, text: content.contact.email },
-              ].map((item) => (
-                <div key={item.text} className="flex items-start gap-4">
-                  <item.icon className="w-5 h-5 text-accent mt-0.5 shrink-0" />
-                  <span className="text-sm text-primary-foreground/80">{item.text}</span>
+              <div className="flex items-start gap-4">
+                <MapPin className="w-5 h-5 text-accent mt-0.5 shrink-0" />
+                <span className="text-sm text-primary-foreground/80">
+                  {content.contact.address}
+                </span>
+              </div>
+              <div className="flex items-start gap-4">
+                <Phone className="w-5 h-5 text-accent mt-0.5 shrink-0" />
+                <div className="flex flex-col gap-1">
+                  {content.contact.phones.map((num) => (
+                    <a
+                      key={num}
+                      href={`tel:${num.replace(/\s+/g, "")}`}
+                      className="text-sm text-primary-foreground/80 hover:text-accent transition-colors"
+                    >
+                      {num}
+                    </a>
+                  ))}
                 </div>
-              ))}
+              </div>
+              <div className="flex items-start gap-4">
+                <Mail className="w-5 h-5 text-accent mt-0.5 shrink-0" />
+                <span className="text-sm text-primary-foreground/80">
+                  {content.contact.email}
+                </span>
+              </div>
             </div>
 
             <a
@@ -68,24 +124,45 @@ const ContactSection = () => {
             className="bg-card text-card-foreground rounded-lg p-6 lg:p-8 space-y-5"
           >
             {[
-              { name: "name" as const, label: "Full Name", type: "text", placeholder: "Your name" },
-              { name: "email" as const, label: "Email", type: "email", placeholder: "you@company.com" },
-              { name: "phone" as const, label: "Phone Number", type: "tel", placeholder: "0801 234 5678" },
+              {
+                name: "name" as const,
+                label: "Full Name",
+                type: "text",
+                placeholder: "Your name",
+              },
+              {
+                name: "email" as const,
+                label: "Email",
+                type: "email",
+                placeholder: "you@company.com",
+              },
+              {
+                name: "phone" as const,
+                label: "Phone Number",
+                type: "tel",
+                placeholder: "0801 234 5678",
+              },
             ].map((field) => (
               <div key={field.name}>
-                <label className="block text-sm font-medium mb-1.5">{field.label}</label>
+                <label className="block text-sm font-medium mb-1.5">
+                  {field.label}
+                </label>
                 <input
                   type={field.type}
                   placeholder={field.placeholder}
                   required
                   value={form[field.name]}
-                  onChange={(e) => setForm({ ...form, [field.name]: e.target.value })}
+                  onChange={(e) =>
+                    setForm({ ...form, [field.name]: e.target.value })
+                  }
                   className="w-full px-4 py-2.5 rounded-md border border-border bg-secondary text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent/50"
                 />
               </div>
             ))}
             <div>
-              <label className="block text-sm font-medium mb-1.5">Message</label>
+              <label className="block text-sm font-medium mb-1.5">
+                Message
+              </label>
               <textarea
                 rows={4}
                 placeholder="Tell us about your project…"
@@ -95,8 +172,38 @@ const ContactSection = () => {
                 className="w-full px-4 py-2.5 rounded-md border border-border bg-secondary text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-accent/50 resize-none"
               />
             </div>
-            <Button type="submit" className="w-full bg-accent text-accent-foreground hover:bg-accent/90 font-heading font-semibold">
-              Send via WhatsApp
+            {status === "success" && (
+              <div className="flex items-start gap-3 rounded-md bg-green-50 border border-green-200 px-4 py-3 text-green-800 text-sm">
+                <CheckCircle className="w-4 h-4 mt-0.5 shrink-0" />
+                <span>
+                  Your message has been sent! We'll get back to you shortly.
+                </span>
+              </div>
+            )}
+            {status === "error" && (
+              <div className="flex items-start gap-3 rounded-md bg-red-50 border border-red-200 px-4 py-3 text-red-800 text-sm">
+                <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
+                <span>
+                  {errorMsg || "Failed to send message. Please try again."}
+                </span>
+              </div>
+            )}
+            <Button
+              type="submit"
+              disabled={status === "loading" || status === "success"}
+              className="w-full bg-accent text-accent-foreground hover:bg-accent/90 font-heading font-semibold disabled:opacity-70"
+            >
+              {status === "loading" ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" /> Sending…
+                </>
+              ) : status === "success" ? (
+                <>
+                  <CheckCircle className="w-4 h-4 mr-2" /> Message Sent
+                </>
+              ) : (
+                "Send Message"
+              )}
             </Button>
           </motion.form>
         </div>

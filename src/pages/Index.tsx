@@ -21,22 +21,20 @@ const Index = () => {
       url: getAbsoluteUrl("/"),
       logo: getAbsoluteUrl("/logo.png"),
       email: content.contact.email,
-      telephone: content.contact.phone,
+      telephone: content.contact.phones[0],
       address: {
         "@type": "PostalAddress",
         streetAddress: content.contact.address,
         addressCountry: "NG",
       },
-      contactPoint: [
-        {
-          "@type": "ContactPoint",
-          contactType: "sales",
-          telephone: content.contact.phone,
-          email: content.contact.email,
-          areaServed: "NG",
-          availableLanguage: ["en"],
-        },
-      ],
+      contactPoint: content.contact.phones.map((tel) => ({
+        "@type": "ContactPoint",
+        contactType: "sales",
+        telephone: tel,
+        email: content.contact.email,
+        areaServed: "NG",
+        availableLanguage: ["en"],
+      })),
     },
     {
       "@context": "https://schema.org",

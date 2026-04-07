@@ -90,7 +90,7 @@ export const aboutOverviewSchema = z.object({
 
 export const contactSchema = z.object({
   address: z.string(),
-  phone: z.string(),
+  phones: z.array(z.string()).min(1),
   email: z.string().email(),
   whatsappNumber: z.string(),
   quoteHeading: z.string(),
@@ -154,7 +154,7 @@ export const defaultSiteContent: SiteContent = {
       iconKey: "network",
       title: "Structured & Fibre Cabling",
       description:
-        "Enterprise-grade network infrastructure, fibre optic cabling, and data centre solutions.",
+        "LAN/MAN/WAN and WLAN network design, deployment, and management. Enterprise-grade structured cabling, fibre optic, and wireless infrastructure for offices, campuses, and data centres.",
       imageKey: "service-cabling",
     },
     {
@@ -170,13 +170,20 @@ export const defaultSiteContent: SiteContent = {
     { iconKey: "home", label: "Home Automation" },
     { iconKey: "fingerprint", label: "Biometric Access Control" },
     { iconKey: "wrench", label: "Maintenance Services" },
+    { iconKey: "shield", label: "Cybersecurity Consultancy" },
+    { iconKey: "layers", label: "Raised Flooring Systems" },
   ],
   products: [
     {
       name: "Monocrystalline Solar Panel — 550W",
       description:
         "High-efficiency monocrystalline panels ideal for commercial and residential rooftop installations. Built for the Nigerian climate.",
-      specs: ["550W output", "21.3% efficiency", "25-year warranty", "IP68 rated"],
+      specs: [
+        "550W output",
+        "21.3% efficiency",
+        "25-year warranty",
+        "IP68 rated",
+      ],
       imageKey: "hero-solar",
       category: "Solar Panels",
     },
@@ -184,7 +191,12 @@ export const defaultSiteContent: SiteContent = {
       name: "Polycrystalline Solar Panel — 330W",
       description:
         "Cost-effective polycrystalline panels perfect for budget-conscious residential projects without compromising quality.",
-      specs: ["330W output", "17.5% efficiency", "20-year warranty", "Anti-reflective coating"],
+      specs: [
+        "330W output",
+        "17.5% efficiency",
+        "20-year warranty",
+        "Anti-reflective coating",
+      ],
       imageKey: "hero-solar",
       category: "Solar Panels",
     },
@@ -192,7 +204,12 @@ export const defaultSiteContent: SiteContent = {
       name: "4-Channel DVR CCTV System",
       description:
         "Complete 4-camera surveillance kit with night vision, motion detection, and remote viewing via mobile app.",
-      specs: ["1080p Full HD", "Night vision 30m", "1TB storage", "Mobile app access"],
+      specs: [
+        "1080p Full HD",
+        "Night vision 30m",
+        "1TB storage",
+        "Mobile app access",
+      ],
       imageKey: "service-cctv",
       category: "CCTV Equipment",
     },
@@ -200,7 +217,12 @@ export const defaultSiteContent: SiteContent = {
       name: "8-Channel IP Camera System",
       description:
         "Enterprise-grade IP camera system with PoE, AI motion detection, and cloud backup support.",
-      specs: ["4K resolution", "PoE powered", "AI detection", "Cloud backup ready"],
+      specs: [
+        "4K resolution",
+        "PoE powered",
+        "AI detection",
+        "Cloud backup ready",
+      ],
       imageKey: "service-cctv",
       category: "CCTV Equipment",
     },
@@ -216,7 +238,12 @@ export const defaultSiteContent: SiteContent = {
       name: "10KVA Online UPS Inverter",
       description:
         "Heavy-duty online UPS for businesses requiring zero-transfer-time power backup.",
-      specs: ["10,000VA capacity", "Zero transfer time", "Rack mountable", "Battery scalable"],
+      specs: [
+        "10,000VA capacity",
+        "Zero transfer time",
+        "Rack mountable",
+        "Battery scalable",
+      ],
       imageKey: "service-inverter",
       category: "Inverters & Power",
     },
@@ -224,7 +251,12 @@ export const defaultSiteContent: SiteContent = {
       name: "Cat6A Structured Cabling Kit",
       description:
         "Complete Cat6A cabling solution for enterprise networks supporting 10Gbps speeds.",
-      specs: ["10Gbps speeds", "500MHz bandwidth", "Shielded (STP)", "Includes patch panels"],
+      specs: [
+        "10Gbps speeds",
+        "500MHz bandwidth",
+        "Shielded (STP)",
+        "Includes patch panels",
+      ],
       imageKey: "service-cabling",
       category: "Network & Cabling",
     },
@@ -232,7 +264,12 @@ export const defaultSiteContent: SiteContent = {
       name: "Fibre Optic Cabling Solution",
       description:
         "Single-mode fibre optic cabling for long-distance, high-bandwidth data centre and campus deployments.",
-      specs: ["Single-mode fibre", "Up to 100km range", "Low attenuation", "Splice & terminate"],
+      specs: [
+        "Single-mode fibre",
+        "Up to 100km range",
+        "Low attenuation",
+        "Splice & terminate",
+      ],
       imageKey: "service-cabling",
       category: "Network & Cabling",
     },
@@ -279,29 +316,25 @@ export const defaultSiteContent: SiteContent = {
     {
       name: "Chief Adebayo Ogunleye",
       role: "MD, Ogunleye & Associates",
-      text:
-        "Netrix Systems installed a complete solar power system for our office complex in Ikeja. The team was professional, punctual, and the quality of work exceeded our expectations. We've cut our energy bills by over 70%.",
+      text: "Netrix Systems installed a complete solar power system for our office complex in Ikeja. The team was professional, punctual, and the quality of work exceeded our expectations. We've cut our energy bills by over 70%.",
       rating: 5,
     },
     {
       name: "Mrs. Funke Adeyemi",
       role: "Homeowner, Lekki",
-      text:
-        "I was impressed by the CCTV installation Netrix did at my residence. The coverage is excellent and the remote monitoring setup works perfectly. I feel so much safer knowing my family is protected.",
+      text: "I was impressed by the CCTV installation Netrix did at my residence. The coverage is excellent and the remote monitoring setup works perfectly. I feel so much safer knowing my family is protected.",
       rating: 5,
     },
     {
       name: "Engr. Tunde Bakare",
       role: "CTO, TechVentures Nigeria",
-      text:
-        "We contracted Netrix for structured cabling across our new office. Their attention to detail and cable management was outstanding. The network performance has been flawless since installation.",
+      text: "We contracted Netrix for structured cabling across our new office. Their attention to detail and cable management was outstanding. The network performance has been flawless since installation.",
       rating: 5,
     },
     {
       name: "Alhaji Mustapha Ibrahim",
       role: "Director, Ibrahim Holdings",
-      text:
-        "Netrix installed inverters and battery backup systems across three of our properties. They delivered on time, within budget, and the systems have been running without issues for over two years.",
+      text: "Netrix installed inverters and battery backup systems across three of our properties. They delivered on time, within budget, and the systems have been running without issues for over two years.",
       rating: 5,
     },
   ],
@@ -385,12 +418,24 @@ export const defaultSiteContent: SiteContent = {
     },
     milestones: [
       { year: "2007", event: "Netrix Systems Limited founded in Ikeja, Lagos" },
-      { year: "2010", event: "Expanded into solar energy solutions for businesses" },
-      { year: "2013", event: "Launched CCTV & security division, covering 5+ cities" },
+      {
+        year: "2010",
+        event: "Expanded into solar energy solutions for businesses",
+      },
+      {
+        year: "2013",
+        event: "Launched CCTV & security division, covering 5+ cities",
+      },
       { year: "2016", event: "Completed 200+ solar and power installations" },
-      { year: "2019", event: "Opened fibre optic & structured cabling services" },
+      {
+        year: "2019",
+        event: "Opened fibre optic & structured cabling services",
+      },
       { year: "2022", event: "Reached 500+ completed projects across Nigeria" },
-      { year: "2025", event: "Serving 10+ Nigerian cities with full ICT solutions" },
+      {
+        year: "2025",
+        event: "Serving 10+ Nigerian cities with full ICT solutions",
+      },
     ],
     team: [
       {
@@ -437,7 +482,12 @@ export const defaultSiteContent: SiteContent = {
   },
   contact: {
     address: "3 Akintoye Sogunle Street, Off Obafemi Awolowo Way, Ikeja, Lagos",
-    phone: "0810 524 9055",
+    phones: [
+      "0810 524 9055",
+      "0802 640 6566",
+      "0909 749 0433",
+      "0706 661 3874",
+    ],
     email: "netrixsystemsng@gmail.com",
     whatsappNumber: "2348105249055",
     quoteHeading: "Request a Free Quote",

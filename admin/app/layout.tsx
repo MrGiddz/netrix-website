@@ -26,8 +26,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${heading.variable} ${body.variable}`}>
-      <body>
+    <html
+      lang="en"
+      className={`${heading.variable} ${body.variable}`}
+      suppressHydrationWarning
+    >
+      <body suppressHydrationWarning>
         <Providers>
           <div className="min-h-screen bg-slate-100 text-slate-950">
             <div className="grid min-h-screen lg:grid-cols-[280px_minmax(0,1fr)]">

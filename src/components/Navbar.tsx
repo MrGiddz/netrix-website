@@ -19,13 +19,25 @@ const Navbar = () => {
       return { ...item, href: isHome ? "#about" : "/about", isRoute: !isHome };
     }
     if (item.label === "Services") {
-      return { ...item, href: isHome ? "#services" : "/#services", isRoute: !isHome };
+      return {
+        ...item,
+        href: isHome ? "#services" : "/#services",
+        isRoute: !isHome,
+      };
     }
     if (item.label === "Gallery") {
-      return { ...item, href: isHome ? "#gallery" : "/#gallery", isRoute: !isHome };
+      return {
+        ...item,
+        href: isHome ? "#gallery" : "/#gallery",
+        isRoute: !isHome,
+      };
     }
     if (item.label === "Contact") {
-      return { ...item, href: isHome ? "#contact" : "/#contact", isRoute: !isHome };
+      return {
+        ...item,
+        href: isHome ? "#contact" : "/#contact",
+        isRoute: !isHome,
+      };
     }
     return { ...item, isRoute: true };
   });
@@ -34,7 +46,11 @@ const Navbar = () => {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-md border-b border-border">
       <div className="container mx-auto flex items-center justify-between h-16 px-4 lg:px-8">
         <Link to="/" className="flex items-center gap-3 text-primary">
-          <img src={logo} alt="Netrix Systems logo" className="h-9 w-9 object-contain" />
+          <img
+            src={logo}
+            alt="Netrix Systems logo"
+            className="h-9 w-9 object-contain"
+          />
           <span className="font-heading text-xl font-800 tracking-tight">
             NETRIX<span className="text-accent">.</span>
           </span>
@@ -59,10 +75,14 @@ const Navbar = () => {
               >
                 {link.label}
               </a>
-            )
+            ),
           )}
-          <a href={`tel:${content.contact.phone.replace(/\s+/g, "")}`}>
-            <Button variant="default" size="sm" className="gap-2 bg-accent text-accent-foreground hover:bg-accent/90">
+          <a href={`tel:${content.contact.phones[0].replace(/\s+/g, "")}`}>
+            <Button
+              variant="default"
+              size="sm"
+              className="gap-2 bg-accent text-accent-foreground hover:bg-accent/90"
+            >
               <Phone className="w-4 h-4" />
               Call Us
             </Button>
@@ -70,7 +90,10 @@ const Navbar = () => {
         </div>
 
         {/* Mobile toggle */}
-        <button className="md:hidden text-foreground" onClick={() => setIsOpen(!isOpen)}>
+        <button
+          className="md:hidden text-foreground"
+          onClick={() => setIsOpen(!isOpen)}
+        >
           {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
       </div>
@@ -97,10 +120,14 @@ const Navbar = () => {
               >
                 {link.label}
               </a>
-            )
+            ),
           )}
-          <a href={`tel:${content.contact.phone.replace(/\s+/g, "")}`}>
-            <Button variant="default" size="sm" className="w-full gap-2 bg-accent text-accent-foreground hover:bg-accent/90">
+          <a href={`tel:${content.contact.phones[0].replace(/\s+/g, "")}`}>
+            <Button
+              variant="default"
+              size="sm"
+              className="w-full gap-2 bg-accent text-accent-foreground hover:bg-accent/90"
+            >
               <Phone className="w-4 h-4" />
               Call Us
             </Button>

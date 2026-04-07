@@ -1,10 +1,10 @@
-import {
-  createContext,
-  useContext,
-  type PropsWithChildren,
-} from "react";
+import { createContext, useContext, type PropsWithChildren } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { defaultSiteContent, siteContentSchema, type SiteContent } from "@/lib/site-content";
+import {
+  defaultSiteContent,
+  siteContentSchema,
+  type SiteContent,
+} from "@/lib/site-content";
 
 type SiteContentContextValue = {
   content: SiteContent;
@@ -18,10 +18,12 @@ const SiteContentContext = createContext<SiteContentContextValue>({
   isError: false,
 });
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001/api";
+const API_BASE = (
+  import.meta.env.VITE_API_URL || "http://localhost:3001"
+).replace(/\/api$/, "");
 
 async function fetchSiteContent() {
-  const response = await fetch(`${API_URL}/content`);
+  const response = await fetch(`${API_BASE}/api/content`);
   if (!response.ok) {
     throw new Error("Failed to load site content");
   }
