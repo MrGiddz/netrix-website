@@ -49,7 +49,7 @@ function SidebarPanel({ onNavigate }: { onNavigate?: () => void }) {
             <Image
               src="/logo.png"
               alt="Netrix logo"
-              className="h-20 w-20 object-contain"
+              className="h-20 w-20 object-contain scale-150"
               width={80}
               height={80}
               priority
