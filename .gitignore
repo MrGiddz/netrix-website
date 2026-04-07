@@ -13,6 +13,12 @@ dist-ssr
 .next
 admin/.next
 *.local
+.env
+.env.*
+!.env.example
+admin/.env
+admin/.env.*
+!admin/.env.example
 
 # Editor directories and files
 .vscode/*
