@@ -10,7 +10,7 @@ const Footer = () => {
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <Link to="/" className="flex items-center gap-3">
-            <img src={logo} alt="Netrix Systems logo" className="h-10 w-10 object-contain" />
+            <img src={logo} alt="Netrix Systems logo" className="h-16 w-16 object-contain scale-200" />
             <span className="font-heading text-lg font-800 tracking-tight">
               NETRIX<span className="text-accent">.</span>
             </span>
