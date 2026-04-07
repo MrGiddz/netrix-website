@@ -45,13 +45,13 @@ function SidebarPanel({ onNavigate }: { onNavigate?: () => void }) {
           onClick={onNavigate}
           className="flex items-center gap-3 text-white"
         >
-          <div className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-xl bg-white/8 ring-1 ring-white/10">
+          <div className="flex h-14 w-14 items-center justify-center overflow-hidden rounded-xl bg-white/8 ring-1 ring-white/10">
             <Image
               src="/logo.png"
               alt="Netrix logo"
-              className="h-8 w-8 object-contain"
-              width={32}
-              height={32}
+              className="h-10 w-10 object-contain"
+              width={40}
+              height={40}
               priority
             />
           </div>
