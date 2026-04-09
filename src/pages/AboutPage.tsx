@@ -127,7 +127,7 @@ const AboutPage = () => {
       </section>
 
       {/* Team */}
-      <section className="py-20 section-gradient">
+      {/* <section className="py-20 section-gradient">
         <div className="container mx-auto px-4 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -163,7 +163,7 @@ const AboutPage = () => {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       <Footer />
     </div>
