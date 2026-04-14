@@ -6,37 +6,92 @@ import { Link, useLocation } from "react-router-dom";
 import { useSiteContent } from "@/providers/site-content-provider";
 import logo from "@/assets/logo.png";
 
+// Map nav label → section id (for home-page hash links)
+const SECTION_MAP: Record<string, string> = {
+  Home: "home",
+  About: "about",
+  Services: "services",
+  Gallery: "gallery",
+  Contact: "contact",
+};
+
+// Map nav label → route path (for page links)
+const ROUTE_MAP: Record<string, string> = {
+  About: "/about",
+  Products: "/products",
+};
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState("home");
   const location = useLocation();
   const isHome = location.pathname === "/";
   const { content } = useSiteContent();
 
+  // Scroll shadow
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 24);
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // IntersectionObserver — track active section on home page
+  useEffect(() => {
+    if (!isHome) return;
+
+    const ids = ["home", "about", "services", "gallery", "testimonials", "faq", "contact"];
+    const observers: IntersectionObserver[] = [];
+
+    ids.forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) setActiveSection(id);
+        },
+        // Fire when the section occupies the top-centre band of the viewport
+        { rootMargin: "-35% 0px -55% 0px", threshold: 0 },
+      );
+      observer.observe(el);
+      observers.push(observer);
+    });
+
+    return () => observers.forEach((o) => o.disconnect());
+  }, [isHome]);
+
+  // Determine whether a nav item is active
+  const isActive = (label: string) => {
+    if (isHome) {
+      return activeSection === (SECTION_MAP[label] ?? "");
+    }
+    // Non-home page: match by pathname
+    return location.pathname === (ROUTE_MAP[label] ?? null);
+  };
+
   const navLinks = content.navigation.map((item) => {
-    if (item.label === "Home") {
+    if (item.label === "Home")
       return { ...item, href: isHome ? "#home" : "/", isRoute: !isHome };
-    }
-    if (item.label === "About") {
+    if (item.label === "About")
       return { ...item, href: isHome ? "#about" : "/about", isRoute: !isHome };
-    }
-    if (item.label === "Services") {
+    if (item.label === "Services")
       return { ...item, href: isHome ? "#services" : "/#services", isRoute: !isHome };
-    }
-    if (item.label === "Gallery") {
+    if (item.label === "Gallery")
       return { ...item, href: isHome ? "#gallery" : "/#gallery", isRoute: !isHome };
-    }
-    if (item.label === "Contact") {
+    if (item.label === "Contact")
       return { ...item, href: isHome ? "#contact" : "/#contact", isRoute: !isHome };
-    }
     return { ...item, isRoute: true };
   });
+
+  const linkClass = (label: string) =>
+    `text-sm font-medium transition-colors relative ${
+      isActive(label) ? "text-primary" : "text-muted-foreground hover:text-primary"
+    }`;
+
+  const mobileLinkClass = (label: string) =>
+    `block text-sm font-medium py-2 transition-colors ${
+      isActive(label) ? "text-primary" : "text-muted-foreground hover:text-primary"
+    }`;
 
   return (
     <motion.nav
@@ -63,20 +118,29 @@ const Navbar = () => {
 
         {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-6">
-          {navLinks.map((link, i) =>
-            link.isRoute ? (
+          {navLinks.map((link, i) => {
+            const active = isActive(link.label);
+            const cls = linkClass(link.label);
+
+            return link.isRoute ? (
               <motion.div
                 key={link.label}
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: 0.1 + i * 0.07 }}
               >
-                <Link
-                  to={link.href}
-                  className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors relative group"
-                >
+                <Link to={link.href} className={cls}>
                   {link.label}
-                  <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-accent transition-all duration-300 group-hover:w-full" />
+                  {/* Sliding active underline */}
+                  {active ? (
+                    <motion.span
+                      layoutId="nav-active-indicator"
+                      className="absolute -bottom-0.5 left-0 right-0 h-0.5 bg-accent rounded-full"
+                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    />
+                  ) : (
+                    <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-accent transition-all duration-300 group-hover:w-full rounded-full" />
+                  )}
                 </Link>
               </motion.div>
             ) : (
@@ -86,16 +150,22 @@ const Navbar = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: 0.1 + i * 0.07 }}
               >
-                <a
-                  href={link.href}
-                  className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors relative group"
-                >
+                <a href={link.href} className={cls}>
                   {link.label}
-                  <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-accent transition-all duration-300 group-hover:w-full" />
+                  {active ? (
+                    <motion.span
+                      layoutId="nav-active-indicator"
+                      className="absolute -bottom-0.5 left-0 right-0 h-0.5 bg-accent rounded-full"
+                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    />
+                  ) : (
+                    <span className="absolute -bottom-0.5 left-0 w-0 h-0.5 bg-accent/60 transition-all duration-300 group-hover:w-full rounded-full" />
+                  )}
                 </a>
               </motion.div>
-            ),
-          )}
+            );
+          })}
+
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -171,9 +241,18 @@ const Navbar = () => {
                     <Link
                       to={link.href}
                       onClick={() => setIsOpen(false)}
-                      className="block text-sm font-medium text-muted-foreground hover:text-primary py-2 transition-colors"
+                      className={mobileLinkClass(link.label)}
                     >
-                      {link.label}
+                      <span className="flex items-center gap-2">
+                        {isActive(link.label) && (
+                          <motion.span
+                            layoutId="mobile-active-dot"
+                            className="w-1.5 h-1.5 rounded-full bg-accent shrink-0"
+                            transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                          />
+                        )}
+                        {link.label}
+                      </span>
                     </Link>
                   </motion.div>
                 ) : (
@@ -186,9 +265,18 @@ const Navbar = () => {
                     <a
                       href={link.href}
                       onClick={() => setIsOpen(false)}
-                      className="block text-sm font-medium text-muted-foreground hover:text-primary py-2 transition-colors"
+                      className={mobileLinkClass(link.label)}
                     >
-                      {link.label}
+                      <span className="flex items-center gap-2">
+                        {isActive(link.label) && (
+                          <motion.span
+                            layoutId="mobile-active-dot"
+                            className="w-1.5 h-1.5 rounded-full bg-accent shrink-0"
+                            transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                          />
+                        )}
+                        {link.label}
+                      </span>
                     </a>
                   </motion.div>
                 ),
