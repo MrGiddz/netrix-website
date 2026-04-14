@@ -17,7 +17,9 @@ const Footer = () => {
             />
           </Link>
           <p className="text-sm text-background/60 text-center">
-            © {new Date().getFullYear()} Netrix Systems Limited. All rights
+            © {new Date().getFullYear()}{" "}
+            <span className="text-red-500 font-bold">NETRIX</span>{" "}
+            <span className="text-blue-400 font-bold">SYSTEMS LIMITED</span>. All rights
             reserved.
           </p>
           <div className="flex gap-6">

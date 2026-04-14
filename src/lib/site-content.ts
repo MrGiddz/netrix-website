@@ -1,11 +1,15 @@
 import {
   Award,
   BatteryCharging,
+  Briefcase,
   Camera,
+  Cloud,
   Eye,
   Fingerprint,
   Flame,
   Home,
+  Layers,
+  Monitor,
   Network,
   Shield,
   Sun,
@@ -64,6 +68,10 @@ const iconMap: Record<string, LucideIcon> = {
   users: Users,
   shield: Shield,
   zap: Zap,
+  layers: Layers,
+  monitor: Monitor,
+  briefcase: Briefcase,
+  cloud: Cloud,
 };
 
 export const resolveImageKey = (imageKey: string) => imageMap[imageKey] || heroSolar;

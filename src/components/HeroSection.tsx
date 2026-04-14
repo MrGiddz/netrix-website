@@ -43,7 +43,7 @@ const HeroSection = () => {
               </Button>
             </a>
             <a href={hero.secondaryCtaHref}>
-              <Button size="lg" variant="outline" className="gap-2 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 text-base font-heading">
+              <Button size="lg" variant="outline" className="gap-2   border-primary-foreground/30 text-primary hover:bg-primary-foreground/10 text-base font-heading">
                 {hero.secondaryCtaLabel}
               </Button>
             </a>
