@@ -132,7 +132,7 @@ export const defaultSiteContent: SiteContent = {
     primaryCtaHref: "#contact",
     secondaryCtaLabel: "Our Services",
     secondaryCtaHref: "#services",
-    trustBadges: ["18+ Years Experience", "10+ Cities Covered"],
+    trustBadges: ["19+ Years Experience", "10+ Cities Covered"],
     backgroundImageKey: "hero-solar",
   },
   services: [
@@ -170,8 +170,12 @@ export const defaultSiteContent: SiteContent = {
     { iconKey: "home", label: "Home Automation" },
     { iconKey: "fingerprint", label: "Biometric Access Control" },
     { iconKey: "wrench", label: "Maintenance Services" },
-    { iconKey: "shield", label: "Cybersecurity Consultancy" },
+    { iconKey: "shield", label: "Cybersecurity" },
     { iconKey: "layers", label: "Raised Flooring Systems" },
+    { iconKey: "monitor", label: "Computer Systems Supply" },
+    { iconKey: "network", label: "System Integration" },
+    { iconKey: "briefcase", label: "Project Management" },
+    { iconKey: "cloud", label: "Cloud Computing" },
   ],
   products: [
     {
@@ -404,13 +408,13 @@ export const defaultSiteContent: SiteContent = {
       mission:
         "Providing world-class ICT goods and services with customer satisfaction and total quality management",
       highlights: [
-        "18+ years of industry experience",
+        "19+ years of industry experience",
         "Operations across 10+ Nigerian cities",
         "Certified ICT professionals",
         "End-to-end project delivery",
       ],
       stats: [
-        { number: "18+", label: "Years Experience" },
+        { number: "19+", label: "Years Experience" },
         { number: "10+", label: "Cities Covered" },
         { number: "500+", label: "Projects Completed" },
         { number: "100%", label: "Client Satisfaction" },
@@ -442,7 +446,7 @@ export const defaultSiteContent: SiteContent = {
         name: "Adebola Okafor",
         role: "Managing Director / CEO",
         imageKey: "team-ceo",
-        bio: "18+ years of leadership in the Nigerian ICT industry, driving innovation and quality service delivery.",
+        bio: "19+ years of leadership in the Nigerian ICT industry, driving innovation and quality service delivery.",
       },
       {
         name: "Ngozi Eze",
