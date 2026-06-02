@@ -10,6 +10,9 @@ export const heroSchema = z.object({
   secondaryCtaHref: z.string(),
   trustBadges: z.array(z.string()).min(1),
   backgroundImageKey: z.string(),
+  backgroundImageUrl: z.string().url().optional(),
+  backgroundImagePublicId: z.string().optional(),
+  backgroundImageSource: z.enum(["public", "cloudinary"]).optional(),
 });
 
 export const serviceSchema = z.object({
@@ -17,6 +20,9 @@ export const serviceSchema = z.object({
   title: z.string(),
   description: z.string(),
   imageKey: z.string(),
+  imageUrl: z.string().url().optional(),
+  imagePublicId: z.string().optional(),
+  imageSource: z.enum(["public", "cloudinary"]).optional(),
 });
 
 export const additionalServiceSchema = z.object({
@@ -29,11 +35,17 @@ export const productSchema = z.object({
   description: z.string(),
   specs: z.array(z.string()),
   imageKey: z.string(),
+  imageUrl: z.string().url().optional(),
+  imagePublicId: z.string().optional(),
+  imageSource: z.enum(["public", "cloudinary"]).optional(),
   category: z.string(),
 });
 
 export const projectSchema = z.object({
   imageKey: z.string(),
+  imageUrl: z.string().url().optional(),
+  imagePublicId: z.string().optional(),
+  imageSource: z.enum(["public", "cloudinary"]).optional(),
   title: z.string(),
   category: z.string(),
   location: z.string(),
@@ -65,6 +77,9 @@ export const teamMemberSchema = z.object({
   name: z.string(),
   role: z.string(),
   imageKey: z.string(),
+  imageUrl: z.string().url().optional(),
+  imagePublicId: z.string().optional(),
+  imageSource: z.enum(["public", "cloudinary"]).optional(),
   bio: z.string(),
 });
 

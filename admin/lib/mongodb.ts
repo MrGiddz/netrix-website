@@ -1,20 +1,19 @@
 import { MongoClient } from "mongodb";
 
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017";
-const MONGODB_DB = process.env.MONGODB_DB || "netrix";
-
 declare global {
   var __netrixMongoClientPromise: Promise<MongoClient> | undefined;
 }
 
-const client = new MongoClient(MONGODB_URI);
-const clientPromise = global.__netrixMongoClientPromise || client.connect();
+function getMongoClientPromise() {
+  if (!global.__netrixMongoClientPromise) {
+    const uri = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017";
+    global.__netrixMongoClientPromise = new MongoClient(uri).connect();
+  }
 
-if (!global.__netrixMongoClientPromise) {
-  global.__netrixMongoClientPromise = clientPromise;
+  return global.__netrixMongoClientPromise;
 }
 
 export async function getMongoCollection(name: string) {
-  const connectedClient = await clientPromise;
-  return connectedClient.db(MONGODB_DB).collection(name);
+  const connectedClient = await getMongoClientPromise();
+  return connectedClient.db(process.env.MONGODB_DB || "netrix").collection(name);
 }

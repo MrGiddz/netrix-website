@@ -3,7 +3,7 @@ type PageShellProps = {
 };
 
 const PageShell = ({ children }: PageShellProps) => (
-  <div className="space-y-6">{children}</div>
+  <div className="space-y-6 pb-8">{children}</div>
 );
 
 export default PageShell;

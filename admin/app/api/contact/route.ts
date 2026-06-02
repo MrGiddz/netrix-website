@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 import { z } from "zod";
 import { API_CORS_HEADERS } from "@/lib/api-cors";
+import { jsonError, jsonOk, readJsonBody } from "@/lib/api-response";
 import { buildOwnerEmail, buildSenderEmail } from "@/lib/email-templates";
 
 export const dynamic = "force-dynamic";
@@ -27,24 +28,22 @@ function createTransporter() {
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
+    const body = await readJsonBody(request);
     const parsed = contactSchema.safeParse(body);
 
     if (!parsed.success) {
-      return NextResponse.json(
-        { error: "Invalid form data", details: parsed.error.flatten() },
-        { status: 400, headers: API_CORS_HEADERS },
-      );
+      return jsonError("Invalid form data", 400, parsed.error.flatten());
     }
 
     const { name, email, phone, message } = parsed.data;
 
     const ownerAddress = process.env.CONTACT_RECIPIENT_EMAIL;
     if (!ownerAddress) {
-      return NextResponse.json(
-        { error: "Mail recipient is not configured" },
-        { status: 500, headers: API_CORS_HEADERS },
-      );
+      return jsonError("Mail recipient is not configured");
+    }
+
+    if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
+      return jsonError("SMTP mail transport is not configured");
     }
 
     const transporter = createTransporter();
@@ -72,13 +71,13 @@ export async function POST(request: Request) {
       }),
     ]);
 
-    return NextResponse.json({ success: true }, { headers: API_CORS_HEADERS });
+    return jsonOk({ success: true });
   } catch (error) {
+    if (error instanceof Error && error.message === "INVALID_JSON") {
+      return jsonError("Request body must be valid JSON", 400);
+    }
     console.error("[contact] mail error:", error);
-    return NextResponse.json(
-      { error: "Failed to send message. Please try again later." },
-      { status: 500, headers: API_CORS_HEADERS },
-    );
+    return jsonError("Failed to send message. Please try again later.");
   }
 }
 

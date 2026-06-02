@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform, type Variants } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { resolveIconKey, resolveImageKey } from "@/lib/site-content";
+import { resolveIconKey, resolveHeroImageSource } from "@/lib/site-content";
 import { useSiteContent } from "@/providers/site-content-provider";
 
 const containerVariants: Variants = {
@@ -69,7 +69,7 @@ const HeroSection = () => {
       {/* Parallax background */}
       <motion.div className="absolute inset-0" style={{ y: bgY }}>
         <img
-          src={resolveImageKey(hero.backgroundImageKey)}
+          src={resolveHeroImageSource(hero)}
           alt="Solar panel installation by Netrix Systems"
           className="w-full h-full object-cover scale-110"
         />

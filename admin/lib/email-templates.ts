@@ -21,7 +21,6 @@ function baseLayout(body: string): string {
       <td align="center">
         <table width="600" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;background-color:${WHITE};border-radius:8px;overflow:hidden;box-shadow:0 4px 24px rgba(22,45,78,0.10);">
 
-          <!-- Header -->
           <tr>
             <td style="background-color:${PRIMARY};padding:28px 40px;text-align:center;">
               <span style="font-family:'Plus Jakarta Sans',Arial,sans-serif;font-size:22px;font-weight:800;color:${WHITE};letter-spacing:-0.5px;">
@@ -31,14 +30,12 @@ function baseLayout(body: string): string {
             </td>
           </tr>
 
-          <!-- Body -->
           <tr>
             <td style="padding:40px 40px 32px 40px;">
               ${body}
             </td>
           </tr>
 
-          <!-- Footer -->
           <tr>
             <td style="background-color:${BG};border-top:1px solid #DDE3EC;padding:24px 40px;text-align:center;">
               <p style="margin:0 0 4px 0;font-size:12px;color:${MUTED};">Netrix Systems Nigeria &mdash; Solar &bull; CCTV &bull; Cabling &bull; Power</p>
@@ -54,7 +51,6 @@ function baseLayout(body: string): string {
 </html>`;
 }
 
-/** Email sent to the business owner with the enquiry details */
 export function buildOwnerEmail(data: {
   name: string;
   email: string;
@@ -67,10 +63,8 @@ export function buildOwnerEmail(data: {
     <h2 style="margin:0 0 6px 0;font-family:'Plus Jakarta Sans',Arial,sans-serif;font-size:20px;font-weight:700;color:${PRIMARY};">New Contact Enquiry</h2>
     <p style="margin:0 0 28px 0;font-size:14px;color:${MUTED};">You have received a new message via the website contact form.</p>
 
-    <!-- Accent bar -->
     <div style="width:40px;height:4px;background-color:${ACCENT};border-radius:2px;margin-bottom:28px;"></div>
 
-    <!-- Details card -->
     <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:${BG};border-radius:6px;border:1px solid #DDE3EC;margin-bottom:28px;">
       <tr>
         <td style="padding:20px 24px;">
@@ -83,13 +77,11 @@ export function buildOwnerEmail(data: {
       </tr>
     </table>
 
-    <!-- Message -->
     <p style="margin:0 0 8px 0;font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:${MUTED};font-family:'Plus Jakarta Sans',Arial,sans-serif;">Message</p>
     <div style="background-color:${BG};border-left:4px solid ${ACCENT};border-radius:0 6px 6px 0;padding:16px 20px;margin-bottom:28px;">
       <p style="margin:0;font-size:15px;line-height:1.7;color:${TEXT};">${data.message.replace(/\n/g, "<br/>")}</p>
     </div>
 
-    <!-- CTA -->
     <table cellpadding="0" cellspacing="0" border="0">
       <tr>
         <td style="background-color:${ACCENT};border-radius:6px;padding:0;">
@@ -102,7 +94,6 @@ export function buildOwnerEmail(data: {
   return { subject, html: baseLayout(body) };
 }
 
-/** Confirmation email sent to the person who submitted the form */
 export function buildSenderEmail(data: {
   name: string;
   businessEmail: string;
@@ -115,14 +106,12 @@ export function buildSenderEmail(data: {
 
     <div style="width:40px;height:4px;background-color:${ACCENT};border-radius:2px;margin-bottom:28px;"></div>
 
-    <!-- Promise block -->
     <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:32px;">
-      ${promiseRow("⚡", "Fast Response", "We typically respond within one business day.")}
-      ${promiseRow("🔒", "Expert Advice", "Our specialists will recommend the best solution for your needs.")}
-      ${promiseRow("📍", "Local Presence", "We operate across Nigeria — from Lagos to Abuja and beyond.")}
+      ${promiseRow("1", "Reply time", "We typically respond within one business day.")}
+      ${promiseRow("2", "Site review", "Our team will review your request and recommend next steps.")}
+      ${promiseRow("3", "Nigerian coverage", "We handle projects across Nigeria, including Lagos and Abuja.")}
     </table>
 
-    <!-- Divider -->
     <hr style="border:none;border-top:1px solid #DDE3EC;margin:0 0 28px 0;" />
 
     <p style="margin:0 0 6px 0;font-size:13px;color:${MUTED};">In the meantime, you can reach us directly:</p>
@@ -133,8 +122,6 @@ export function buildSenderEmail(data: {
 
   return { subject, html: baseLayout(body) };
 }
-
-// ─── Helpers ───────────────────────────────────────────────────────────────
 
 function infoRow(label: string, value: string, last = false): string {
   return `

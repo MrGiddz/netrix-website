@@ -1,7 +1,7 @@
 import { motion, AnimatePresence, type Variants } from "framer-motion";
 import { useState } from "react";
 import { X, ChevronLeft, ChevronRight, MapPin } from "lucide-react";
-import { resolveImageKey } from "@/lib/site-content";
+import { resolveImageSource } from "@/lib/site-content";
 import { useSiteContent } from "@/providers/site-content-provider";
 
 const cardVariants: Variants = {
@@ -100,7 +100,7 @@ const GallerySection = () => {
                 onClick={() => setLightbox(content.projects.indexOf(project))}
               >
                 <img
-                  src={resolveImageKey(project.imageKey)}
+                  src={resolveImageSource(project)}
                   alt={project.title}
                   className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500"
                 />
@@ -160,7 +160,7 @@ const GallerySection = () => {
             {/* Image */}
             <motion.img
               key={lightbox}
-              src={resolveImageKey(content.projects[lightbox].imageKey)}
+              src={resolveImageSource(content.projects[lightbox])}
               alt={content.projects[lightbox].title}
               className="max-w-full max-h-[80vh] rounded-lg object-contain"
               initial={{ opacity: 0, scale: 0.92 }}

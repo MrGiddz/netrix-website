@@ -28,13 +28,25 @@ const SiteContentContext = createContext<SiteContentContextValue | null>(null);
 
 async function requestContent(input: RequestInfo, init?: RequestInit) {
   const response = await fetch(input, init);
-  const payload = await response.json();
+  let payload: unknown;
 
-  if (!response.ok) {
-    throw new Error(payload?.error || "Request failed");
+  try {
+    payload = await response.json();
+  } catch {
+    throw new Error(response.ok ? "Invalid server response" : "Request failed");
   }
 
-  const parsed = siteContentSchema.safeParse(payload.content);
+  if (!response.ok) {
+    const error = typeof payload === "object" && payload && "error" in payload
+      ? String(payload.error)
+      : "Request failed";
+    throw new Error(error);
+  }
+
+  const content = typeof payload === "object" && payload && "content" in payload
+    ? payload.content
+    : undefined;
+  const parsed = siteContentSchema.safeParse(content);
   if (!parsed.success) {
     throw new Error("Invalid site content payload");
   }
@@ -65,13 +77,14 @@ export const SiteContentProvider = ({ children }: PropsWithChildren) => {
     setError("");
     setIsSaving(true);
     try {
-      const saved = await requestContent("/api/content", {
+      await requestContent("/api/content", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ content: nextContent }),
       });
+      const saved = await requestContent("/api/content");
       setContent(saved);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to save content");
@@ -85,9 +98,10 @@ export const SiteContentProvider = ({ children }: PropsWithChildren) => {
     setError("");
     setIsSaving(true);
     try {
-      const seeded = await requestContent("/api/content/seed", {
+      await requestContent("/api/content/seed", {
         method: "POST",
       });
+      const seeded = await requestContent("/api/content");
       setContent(seeded);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to reset content");

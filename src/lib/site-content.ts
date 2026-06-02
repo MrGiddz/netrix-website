@@ -19,39 +19,12 @@ import {
   Zap,
   type LucideIcon,
 } from "lucide-react";
-import heroSolar from "@/assets/hero-solar.jpg";
-import serviceCctv from "@/assets/service-cctv.jpg";
-import serviceCabling from "@/assets/service-cabling.jpg";
-import serviceInverter from "@/assets/service-inverter.jpg";
-import gallerySolar1 from "@/assets/gallery-solar-1.jpg";
-import gallerySolar2 from "@/assets/gallery-solar-2.jpg";
-import galleryCctv1 from "@/assets/gallery-cctv-1.jpg";
-import galleryCabling1 from "@/assets/gallery-cabling-1.jpg";
-import galleryInverter1 from "@/assets/gallery-inverter-1.jpg";
-import galleryAutomation1 from "@/assets/gallery-automation-1.jpg";
-import teamCeo from "@/assets/team-ceo.jpg";
-import teamOps from "@/assets/team-ops.jpg";
-import teamTech from "@/assets/team-tech.jpg";
 import { defaultSiteContent, siteContentSchema, type SiteContent } from "../../shared/site-content";
+import { PUBLIC_IMAGE_OPTIONS, getPublicImageOption } from "../../shared/public-images";
 
 export type { SiteContent };
 export { defaultSiteContent, siteContentSchema };
-
-const imageMap: Record<string, string> = {
-  "hero-solar": heroSolar,
-  "service-cctv": serviceCctv,
-  "service-cabling": serviceCabling,
-  "service-inverter": serviceInverter,
-  "gallery-solar-1": gallerySolar1,
-  "gallery-solar-2": gallerySolar2,
-  "gallery-cctv-1": galleryCctv1,
-  "gallery-cabling-1": galleryCabling1,
-  "gallery-inverter-1": galleryInverter1,
-  "gallery-automation-1": galleryAutomation1,
-  "team-ceo": teamCeo,
-  "team-ops": teamOps,
-  "team-tech": teamTech,
-};
+export { PUBLIC_IMAGE_OPTIONS, getPublicImageOption };
 
 const iconMap: Record<string, LucideIcon> = {
   sun: Sun,
@@ -74,6 +47,22 @@ const iconMap: Record<string, LucideIcon> = {
   cloud: Cloud,
 };
 
-export const resolveImageKey = (imageKey: string) => imageMap[imageKey] || heroSolar;
+export const resolveImageKey = (imageKey: string) => getPublicImageOption(imageKey).src;
+
+export const resolveImageSource = (image?: {
+  imageKey?: string;
+  imageUrl?: string;
+  imageSource?: "public" | "cloudinary";
+}) => {
+  if (image?.imageSource === "cloudinary" && image.imageUrl) return image.imageUrl;
+  return resolveImageKey(image?.imageKey || "hero-solar");
+};
+
+export const resolveHeroImageSource = (hero: SiteContent["hero"]) => {
+  if (hero.backgroundImageSource === "cloudinary" && hero.backgroundImageUrl) {
+    return hero.backgroundImageUrl;
+  }
+  return resolveImageKey(hero.backgroundImageKey);
+};
 
 export const resolveIconKey = (iconKey: string) => iconMap[iconKey] || Sun;

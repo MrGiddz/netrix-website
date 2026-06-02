@@ -6,7 +6,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Seo from "@/components/Seo";
 import { getAbsoluteUrl } from "@/lib/seo";
-import { resolveImageKey } from "@/lib/site-content";
+import { resolveImageSource } from "@/lib/site-content";
 import { useSiteContent } from "@/providers/site-content-provider";
 
 const categoryIcons: Record<string, typeof Sun> = {
@@ -101,7 +101,7 @@ const ProductsPage = () => {
                   >
                     <div className="h-48 overflow-hidden">
                       <img
-                        src={resolveImageKey(product.imageKey)}
+                        src={resolveImageSource(product)}
                         alt={product.name}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />

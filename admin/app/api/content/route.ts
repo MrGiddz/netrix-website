@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { API_CORS_HEADERS } from "@/lib/api-cors";
+import { jsonError, jsonOk, readJsonBody } from "@/lib/api-response";
 import { getStoredContent, saveContent } from "@/lib/content-store";
 import { siteContentSchema } from "@/lib/site-content";
 
@@ -8,34 +9,28 @@ export const dynamic = "force-dynamic";
 export async function GET() {
   try {
     const content = await getStoredContent();
-    return NextResponse.json({ content }, { headers: API_CORS_HEADERS });
+    return jsonOk({ success: true, content });
   } catch (error) {
-    return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Failed to load content" },
-      { status: 500, headers: API_CORS_HEADERS },
-    );
+    return jsonError(error instanceof Error ? error.message : "Failed to load content");
   }
 }
 
 export async function PUT(request: Request) {
   try {
-    const body = await request.json();
+    const body = await readJsonBody(request);
     const parsed = siteContentSchema.safeParse(body.content);
 
     if (!parsed.success) {
-      return NextResponse.json(
-        { error: "Invalid site content payload", details: parsed.error.flatten() },
-        { status: 400, headers: API_CORS_HEADERS },
-      );
+      return jsonError("Invalid site content payload", 400, parsed.error.flatten());
     }
 
     const content = await saveContent(parsed.data);
-    return NextResponse.json({ content }, { headers: API_CORS_HEADERS });
+    return jsonOk({ success: true, content });
   } catch (error) {
-    return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Failed to save content" },
-      { status: 500, headers: API_CORS_HEADERS },
-    );
+    if (error instanceof Error && error.message === "INVALID_JSON") {
+      return jsonError("Request body must be valid JSON", 400);
+    }
+    return jsonError(error instanceof Error ? error.message : "Failed to save content");
   }
 }
 

@@ -1,5 +1,5 @@
 import { motion, type Variants } from "framer-motion";
-import { resolveIconKey, resolveImageKey } from "@/lib/site-content";
+import { resolveIconKey, resolveImageSource } from "@/lib/site-content";
 import { useSiteContent } from "@/providers/site-content-provider";
 
 const cardVariants: Variants = {
@@ -71,7 +71,7 @@ const ServicesSection = () => {
               >
                 <div className="h-48 overflow-hidden">
                   <motion.img
-                    src={resolveImageKey(service.imageKey)}
+                    src={resolveImageSource(service)}
                     alt={service.title}
                     className="w-full h-full object-cover"
                     whileHover={{ scale: 1.06 }}

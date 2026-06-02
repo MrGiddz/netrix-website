@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
 import { API_CORS_HEADERS } from "@/lib/api-cors";
+import { jsonOk } from "@/lib/api-response";
 
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  return NextResponse.json({ status: "ok" }, { headers: API_CORS_HEADERS });
+  return jsonOk({ status: "ok" });
 }
 
 export async function OPTIONS() {

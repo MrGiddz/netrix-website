@@ -6,7 +6,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Seo from "@/components/Seo";
 import { getAbsoluteUrl } from "@/lib/seo";
-import { resolveIconKey, resolveImageKey } from "@/lib/site-content";
+import { resolveIconKey, resolveImageSource } from "@/lib/site-content";
 import { useSiteContent } from "@/providers/site-content-provider";
 
 const AboutPage = () => {
@@ -53,7 +53,7 @@ const AboutPage = () => {
               {content.about.overview.eyebrow}
             </span>
             <h1 className="text-4xl md:text-5xl font-heading font-800 mt-3 mb-4">
-              Our Story & Team
+              {content.about.overview.title}
             </h1>
             <p className="text-primary-foreground/70 max-w-xl text-lg">
               {content.about.overview.description}
@@ -127,7 +127,7 @@ const AboutPage = () => {
       </section>
 
       {/* Team */}
-      {/* <section className="py-20 section-gradient">
+      <section className="py-20 section-gradient">
         <div className="container mx-auto px-4 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -150,7 +150,7 @@ const AboutPage = () => {
                 className="bg-card rounded-lg border border-border overflow-hidden text-center"
               >
                 <img
-                  src={resolveImageKey(member.imageKey)}
+                  src={resolveImageSource(member)}
                   alt={member.name}
                   className="w-full h-64 object-cover"
                 />
@@ -163,7 +163,7 @@ const AboutPage = () => {
             ))}
           </div>
         </div>
-      </section> */}
+      </section>
 
       <Footer />
     </div>
